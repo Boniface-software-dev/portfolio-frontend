@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colours to match screenshot */
+:root{
+  --brand-blue:#10203a;
+  --accent-green:#0fa56e;
+  --muted:#6b7280;
+  --hero-bg: linear-gradient(180deg,#eef6ff 0%, #f0f7ff 100%);
+}
+
+/* small utility */
+.hero-bg {
+  background: var(--hero-bg);
+}
