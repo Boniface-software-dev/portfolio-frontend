@@ -1,18 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
 import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
 import Projects from "./components/Projects";
-import Home from "./pages/Home";
+import Footer from "./components/Footer";
 
-function App() {
+export default function App(){
   return (
-    <Router>
+    <div className="min-h-screen font-sans text-gray-800 bg-white">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-      </Routes>
-    </Router>
+      <main>
+        <Hero />
+        <Projects />
+      </main>
+      <Footer />
+    </div>
   );
 }
-
-export default App;
