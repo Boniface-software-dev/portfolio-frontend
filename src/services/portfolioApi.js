@@ -1,7 +1,13 @@
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 const API = `${BACKEND_URL}/api`;
+
+//Debugging log (only runs in dev mode)
+if (import.meta.env.DEV) {
+  console.log("Backend URL:", BACKEND_URL);
+}
+
 
 // Create axios instance with default config
 const apiClient = axios.create({
