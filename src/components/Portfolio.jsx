@@ -126,7 +126,7 @@ const Portfolio = () => {
       {/* Navigation */}
       <nav className="nav-bar">
         <div className="nav-content">
-          <h2 className="nav-logo">{portfolioData.personalInfo?.name || 'Portfolio'}</h2>
+          <h2 className="nav-logo">{portfolioData.info?.name || 'Portfolio'}</h2>
           <div className={`nav-links ${isMenuOpen ? 'nav-open' : ''}`}>
             <button onClick={() => scrollToSection('about')} className={activeSection === 'about' ? 'nav-active' : ''}>About</button>
             <button onClick={() => scrollToSection('skills')} className={activeSection === 'skills' ? 'nav-active' : ''}>Skills</button>
@@ -147,9 +147,9 @@ const Portfolio = () => {
         <div className="hero-content">
           <div className="hero-text">
             <p className="hero-greeting">Hello, I'm</p>
-            <h1 className="hero-name">{portfolioData.personalInfo?.name}</h1>
-            <h2 className="hero-title">{portfolioData.personalInfo?.title}</h2>
-            <p className="hero-description">{portfolioData.personalInfo?.summary}</p>
+            <h1 className="hero-name">{portfolioData.info?.name}</h1>
+            <h2 className="hero-title">{portfolioData.info?.title}</h2>
+            <p className="hero-description">{portfolioData.info?.summary}</p>
             <div className="hero-buttons">
               <button className="btn-primary" onClick={() => scrollToSection('contact')}>
                 Get In Touch
@@ -160,13 +160,13 @@ const Portfolio = () => {
               </button>
             </div>
             <div className="hero-contact">
-              <a href={`mailto:${portfolioData.personalInfo?.email}`} className="contact-link">
+              <a href={`mailto:${portfolioData.info?.email}`} className="contact-link">
                 <Mail size={20} />
-                {portfolioData.personalInfo?.email}
+                {portfolioData.info?.email}
               </a>
-              <a href={`tel:${portfolioData.personalInfo?.phone}`} className="contact-link">
+              <a href={`tel:${portfolioData.info?.phone}`} className="contact-link">
                 <Phone size={20} />
-                {portfolioData.personalInfo?.phone}
+                {portfolioData.info?.phone}
               </a>
             </div>
           </div>
@@ -357,28 +357,28 @@ const Portfolio = () => {
               <h3>Get In Touch</h3>
               <p>I'm always interested in new opportunities and exciting projects. Let's connect!</p>
               <div className="contact-links">
-                <a href={`mailto:${portfolioData.personalInfo?.email}`} className="contact-item">
+                <a href={`mailto:${portfolioData.info?.email}`} className="contact-item">
                   <Mail size={24} />
                   <div>
                     <span>Email</span>
-                    <p>{portfolioData.personalInfo?.email}</p>
+                    <p>{portfolioData.info?.email}</p>
                   </div>
                 </a>
-                <a href={`tel:${portfolioData.personalInfo?.phone}`} className="contact-item">
+                <a href={`tel:${portfolioData.info?.phone}`} className="contact-item">
                   <Phone size={24} />
                   <div>
                     <span>Phone</span>
-                    <p>{portfolioData.personalInfo?.phone}</p>
+                    <p>{portfolioData.info?.phone}</p>
                   </div>
                 </a>
-                <a href={portfolioData.personalInfo?.linkedin} className="contact-item" target="_blank" rel="noopener noreferrer">
+                <a href={portfolioData.info?.linkedin} className="contact-item" target="_blank" rel="noopener noreferrer">
                   <Linkedin size={24} />
                   <div>
                     <span>LinkedIn</span>
                     <p>Connect with me</p>
                   </div>
                 </a>
-                <a href={portfolioData.personalInfo?.github} className="contact-item" target="_blank" rel="noopener noreferrer">
+                <a href={portfolioData.info?.github} className="contact-item" target="_blank" rel="noopener noreferrer">
                   <Github size={24} />
                   <div>
                     <span>GitHub</span>
@@ -394,12 +394,12 @@ const Portfolio = () => {
       {/* Footer */}
       <footer className="footer">
         <div className="container">
-          <p>&copy; 2025 {portfolioData.personalInfo?.name}. All rights reserved.</p>
+          <p>&copy; 2025 {portfolioData.info?.name}. All rights reserved.</p>
           <div className="footer-social">
-            <a href={portfolioData.personalInfo?.linkedin} target="_blank" rel="noopener noreferrer">
+            <a href={portfolioData.info?.linkedin} target="_blank" rel="noopener noreferrer">
               <Linkedin size={20} />
             </a>
-            <a href={portfolioData.personalInfo?.github} target="_blank" rel="noopener noreferrer">
+            <a href={portfolioData.info?.github} target="_blank" rel="noopener noreferrer">
               <Github size={20} />
             </a>
           </div>
