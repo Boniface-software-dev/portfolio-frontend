@@ -177,15 +177,15 @@ const Portfolio = () => {
               </div>
               <div className="profile-stats">
                 <div className="stat">
-                  <span className="stat-number">6 months</span>
+                  <span className="stat-number">1+Yrs</span>
                   <span className="stat-label">Software Engineering</span>
                 </div>
                 <div className="stat">
-                  <span className="stat-number">5+</span>
+                  <span className="stat-number">5+Yrs</span>
                   <span className="stat-label">AI Training</span>
                 </div>
                 <div className="stat">
-                  <span className="stat-number">10+</span>
+                  <span className="stat-number">10+Yrs</span>
                   <span className="stat-label">Technologies</span>
                 </div>
               </div>
