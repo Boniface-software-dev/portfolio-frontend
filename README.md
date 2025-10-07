@@ -1,12 +1,72 @@
-# React + Vite
+# Boniface Muguro — Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal **Software Engineering Portfolio**, a professional showcase of my journey, technical expertise, and software development projects.  
+This portfolio demonstrates my ability to design, build, and deploy full-stack applications using modern web technologies.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##  About the Project
 
-## Expanding the ESLint configuration
+This portfolio was built to **highlight my skills and experience in software engineering and AI development**.  
+It serves as both a technical demonstration and a personal brand platform — allowing visitors, recruiters, and collaborators to explore my background, experience, and the projects I’ve built.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The portfolio includes:
+- My **professional summary and contact information**
+- A breakdown of **technical skills and tools**
+- **Experience** across AI training and software development roles
+- A list of **projects** with live links and GitHub repositories
+- My **education** and **certifications**
+
+---
+
+##  Tech Stack
+
+**Frontend**
+- React.js (Vite)
+- Tailwind CSS
+- Axios
+- Lucide React Icons
+
+**Backend**
+- Flask (Python)
+- SQLAlchemy ORM
+- PostgreSQL Database
+- RESTful API Design
+
+**Deployment**
+- Frontend: Vercel  
+- Backend: Render
+
+---
+
+##  Features
+
+- Fully responsive and mobile-optimised design  
+- Dynamic data fetching from Flask backend  
+- Smooth navigation with React Router  
+- Professional project showcase with live links  
+- “Download CV” button for recruiters and clients  
+- Deployed using modern CI/CD tools for scalability  
+
+---
+ Backend API: https://portfolio-y4f5.onrender.com
+
+ Author
+Boniface Muguro
+
+
+License
+This project is open source and available under the MIT License.
+
+“Code is not just logic — it’s creativity expressed through precision.”
+
+
+
+---
+
+
+
+
+
+
+
