@@ -154,7 +154,12 @@ const Portfolio = () => {
               <button className="btn-primary" onClick={() => scrollToSection('contact')}>
                 Get In Touch
               </button>
-              <button className="btn-secondary">
+              <button
+                className="btn-secondary"
+                onClick={() =>
+                  window.open("/Boniface_Muguro_CV_Software Engineering.pdf", '_blank')
+                }
+              >
                 <Download size={18} />
                 Download CV
               </button>
