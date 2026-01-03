@@ -21,6 +21,20 @@ import {
   Cloud
 } from 'lucide-react';
 
+/* ---------- HELPERS ---------- */
+const normalizeAchievements = (achievements) => {
+  if (Array.isArray(achievements)) {
+    return achievements;
+  }
+  if (typeof achievements === 'string') {
+    return achievements
+      .split('\n')
+      .map(a => a.replace('- ', '').trim())
+      .filter(Boolean);
+  }
+  return [];
+};
+
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('about');
@@ -117,7 +131,9 @@ const Portfolio = () => {
               </button>
               <button
                 className="btn-secondary"
-                onClick={() => window.open('/Boniface_Kimani_Muguro_Software_Engineer_CV.pdf', '_blank')}
+                onClick={() =>
+                  window.open('/Boniface_Kimani_Muguro_Software_Engineer_CV.pdf', '_blank')
+                }
               >
                 <Download size={18} />
                 Download CV
@@ -189,13 +205,13 @@ const Portfolio = () => {
                 <span>{exp.period}</span>
                 <h4>{exp.company}</h4>
                 <p><MapPin size={14} /> {exp.location}</p>
+
                 <ul>
-                  {exp.achievements
-                    .split('\n')
-                    .map((a, i) => (
-                      <li key={i}>{a.replace('- ', '')}</li>
-                    ))}
+                  {normalizeAchievements(exp.achievements).map((a, i) => (
+                    <li key={i}>{a}</li>
+                  ))}
                 </ul>
+
               </div>
             </div>
           ))}
@@ -207,7 +223,7 @@ const Portfolio = () => {
         <h2 className="section-title">Selected Engineering Projects</h2>
         <div className="projects-grid">
           {portfolioData.projects
-            .sort((a, b) => b.is_featured - a.is_featured)
+            .sort((a, b) => (b.is_featured ?? 0) - (a.is_featured ?? 0))
             .map((project, idx) => (
               <div key={idx} className={`project-card ${project.is_featured ? 'featured' : ''}`}>
                 <h3>{project.title}</h3>
@@ -269,10 +285,10 @@ const Portfolio = () => {
         <a href={portfolioData.info.github} target="_blank" rel="noreferrer"><Github /> GitHub</a>
       </section>
 
-      {/* FOOTER */}
       <footer className="footer">
         <p>© 2026 {portfolioData.info.name}. All rights reserved.</p>
       </footer>
+
     </div>
   );
 };
