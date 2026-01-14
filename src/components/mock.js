@@ -82,7 +82,7 @@ export const mockData = {
       order: 3
     },
     {
-      title: "Automotive Technician (Internship)",
+      title: "Software Engineer (Internship)",
       company: "Isuzu East Africa Limited",
       period: "Mar 2018 - Sep 2018",
       location: "Nairobi, Kenya",
@@ -98,7 +98,8 @@ export const mockData = {
     {
       title: "TICKSY",
       description:
-        "A modern, mobile-friendly event ticketing platform built to streamline how people discover, attend, and manage events. Frontend built with ReactJS and Redux Toolkit, integrated with Flask/PostgreSQL backend.",
+        "- A modern, mobile-friendly event ticketing platform built to streamline how people discover, attend, and manage events.\n" +
+        "- Frontend built with ReactJS and Redux Toolkit, integrated with Flask/PostgreSQL backend.",
       technologies: "React.js, Redux Toolkit, Flask, PostgreSQL, JavaScript, CSS3",
       live_url: "https://ticksy-frontend.vercel.app/",
       github_url: "https://github.com/Boniface-software-dev/ticksy-frontend",
