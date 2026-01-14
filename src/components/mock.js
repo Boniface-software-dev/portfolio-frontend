@@ -167,12 +167,12 @@ export const mockData = {
       order: 2
     },
     {
-      degree: "Automotive Engineering (Mechanical)",
+      degree: "Computer Science",
       school: "Technical University of Mombasa",
       period: "2016 - 2018",
       location: "Mombasa, Kenya",
       description:
-        "Studied system design, robotics, and diagnostics. Built structured problem-solving foundation useful in software engineering.",
+        "Coursework in algorithms, data structures, system design, robotics, and software engineering fundamentals. • Graduated with strong academic performance (GPA: 4.0).",
       order: 3
     }
   ],
