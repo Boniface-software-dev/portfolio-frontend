@@ -1,296 +1,211 @@
-import React, { useState, useEffect } from 'react';
-import { fetchPortfolioData } from '../services/portfolioApi';
-import LoadingSpinner from './LoadingSpinner';
-import ErrorBoundary from './ErrorBoundary';
-import {
-  Mail,
-  Phone,
-  Linkedin,
-  Github,
-  ExternalLink,
-  Code,
-  Database,
-  Brain,
-  Cpu,
-  Award,
-  Calendar,
-  MapPin,
-  Download,
-  Menu,
-  X,
-  Cloud
-} from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { Mail, Phone, Linkedin, Github, ExternalLink, Code, Database, Brain, Cpu, Cloud, MapPin, Calendar, Award } from "lucide-react";
+// Ensure App.css is imported in your main.jsx or App.jsx, or import it here:
+import '../App.css'; 
 
-/* ---------- HELPERS ---------- */
-const normalizeAchievements = (achievements) => {
-  if (Array.isArray(achievements)) {
-    return achievements;
-  }
-  if (typeof achievements === 'string') {
-    return achievements
-      .split('\n')
-      .map(a => a.replace('- ', '').trim())
-      .filter(Boolean);
-  }
-  return [];
-};
-
-const Portfolio = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('about');
-  const [portfolioData, setPortfolioData] = useState(null);
+export default function Portfolio() {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const scrollToSection = (sectionId) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-    setActiveSection(sectionId);
-    setIsMenuOpen(false);
-  };
-
-  const getSkillIcon = (category) => {
-    const map = {
-      'Languages': <Code size={32} />,
-      'Frameworks & Libraries': <Cpu size={32} />,
-      'Backend & APIs': <Database size={32} />,
-      'Databases': <Database size={32} />,
-      'AI & ML': <Brain size={32} />,
-      'Developer Tools': <Cloud size={32} />,
-      'Core CS': <Code size={32} />
-    };
-    return map[category] || <Code size={32} />;
-  };
+  const API_URL = import.meta.env.VITE_BACKEND_URL; 
 
   useEffect(() => {
-    const loadPortfolioData = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchPortfolioData();
-        setPortfolioData(data);
-      } catch (err) {
-        setError(err);
-      } finally {
+    fetch(`${API_URL}/api/portfolio/complete`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load portfolio data");
+        return res.json();
+      })
+      .then((json) => {
+        setData(json);
         setLoading(false);
-      }
-    };
-    loadPortfolioData();
-  }, []);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [API_URL]);
 
-  if (loading) {
-    return (
-      <div className="portfolio-loading">
-        <LoadingSpinner size="xl" message="Loading portfolio..." />
-      </div>
-    );
-  }
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-xl">Loading portfolio...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+  if (!data) return null;
 
-  if (error) {
-    return <ErrorBoundary error={error} onRetry={() => window.location.reload()} />;
-  }
-
-  if (!portfolioData) {
-    return <p>No portfolio data available</p>;
-  }
+  const { info, skills, experience, projects, education, certifications } = data;
 
   return (
     <div className="portfolio-container">
+      
+      {/* ================= HERO / INTRO ================= */}
+      {/* Keeping this simple Tailwind for now, or you can style it in App.css */}
+      <header className="max-w-5xl mx-auto px-4 py-20 text-center">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 text-slate-800">{info.name}</h1>
+        <p className="text-xl md:text-2xl text-slate-600 mb-6">{info.title}</p>
+        <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">{info.summary}</p>
+      </header>
 
-      {/* NAVIGATION */}
-      <nav className="nav-bar">
-        <div className="nav-content">
-          <h2 className="nav-logo">{portfolioData.info.name}</h2>
-          <div className={`nav-links ${isMenuOpen ? 'nav-open' : ''}`}>
-            {['about', 'skills', 'experience', 'projects', 'education', 'certifications', 'contact'].map(section => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={activeSection === section ? 'nav-active' : ''}
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </button>
+      {/* ================= SKILLS ================= */}
+      <section className="bg-slate-50 py-16">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center text-slate-800">Technical Skills</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {skills?.map((skill, i) => (
+              <div key={i} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-lg mb-3 text-indigo-600">{skill.category}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {skill.items.map((item, idx) => (
+                    <span key={idx} className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm font-medium">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
-          <button className="mobile-menu" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section id="about" className="hero-section">
-        <div className="hero-content">
-          <div className="hero-text">
-            <p className="hero-greeting">Hello, I'm</p>
-            <h1 className="hero-name">{portfolioData.info.name}</h1>
-            <h2 className="hero-title">{portfolioData.info.title}</h2>
-            <p className="hero-description">{portfolioData.info.summary}</p>
-
-            <div className="hero-buttons">
-              <button className="btn-primary" onClick={() => scrollToSection('contact')}>
-                Get In Touch
-              </button>
-              <button
-                className="btn-secondary"
-                onClick={() =>
-                  window.open('/Boniface_Kimani_Muguro_Software_Engineer_CV.pdf', '_blank')
-                }
-              >
-                <Download size={18} />
-                Download CV
-              </button>
-            </div>
-
-            <div className="hero-contact">
-              <a href={`mailto:${portfolioData.info.email}`}>
-                <Mail size={18} /> {portfolioData.info.email}
-              </a>
-              <a href={`tel:${portfolioData.info.phone}`}>
-                <Phone size={18} /> {portfolioData.info.phone}
-              </a>
-            </div>
-          </div>
-
-          <div className="hero-image">
-            <div className="profile-card">
-              <div className="profile-avatar">
-                <Code size={72} />
-              </div>
-              <div className="profile-stats">
-                <div>
-                  <strong>5+</strong>
-                  <span>Years Professional Experience</span>
-                </div>
-                <div>
-                  <strong>Full-Stack</strong>
-                  <span>Backend & APIs</span>
-                </div>
-                <div>
-                  <strong>AI</strong>
-                  <span>Model Training & Evaluation</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* SKILLS */}
-      <section id="skills" className="skills-section">
-        <h2 className="section-title">Technical Skills</h2>
-        <div className="skills-grid">
-          {portfolioData.skills.map((skill, idx) => (
-            <div key={idx} className="skill-category">
-              <div className="skill-header">
-                {getSkillIcon(skill.category)}
-                <h3>{skill.category}</h3>
-              </div>
-              <div className="skill-items">
-                {skill.items.map((item, i) => (
-                  <span key={i} className="skill-tag">{item}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* EXPERIENCE */}
-      <section id="experience" className="experience-section">
-        <h2 className="section-title">Professional Experience</h2>
-        <div className="timeline">
-          {portfolioData.experience.map((exp, idx) => (
-            <div key={idx} className="timeline-item">
-              <div className="timeline-content">
-                <h3>{exp.title}</h3>
-                <span>{exp.period}</span>
-                <h4>{exp.company}</h4>
-                <p><MapPin size={14} /> {exp.location}</p>
-
-                <ul>
-                  {normalizeAchievements(exp.achievements).map((a, i) => (
-                    <li key={i}>{a}</li>
+      {/* ================= EXPERIENCE ================= */}
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-10 text-center text-slate-800">Experience</h2>
+          <div className="space-y-8">
+            {experience?.map((exp, i) => (
+              <div key={i} className="border-l-4 border-indigo-500 pl-6 py-2 relative">
+                <div className="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-indigo-500"></div>
+                <h3 className="text-xl font-bold text-slate-800">{exp.title}</h3>
+                <h4 className="text-lg text-indigo-600 font-semibold mb-1">{exp.company}</h4>
+                <div className="flex items-center gap-4 text-sm text-slate-500 mb-3">
+                    <span className="flex items-center gap-1"><Calendar size={14}/> {exp.period}</span>
+                    <span className="flex items-center gap-1"><MapPin size={14}/> {exp.location}</span>
+                </div>
+                <ul className="list-disc ml-4 space-y-1 text-slate-600">
+                  {exp.achievements.map((ach, idx) => (
+                    <li key={idx}>{ach}</li>
                   ))}
                 </ul>
-
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* PROJECTS */}
-      <section id="projects" className="projects-section">
-        <h2 className="section-title">Selected Engineering Projects</h2>
-        <div className="projects-grid">
-          {portfolioData.projects
-            .sort((a, b) => (b.is_featured ?? 0) - (a.is_featured ?? 0))
-            .map((project, idx) => (
-              <div key={idx} className={`project-card ${project.is_featured ? 'featured' : ''}`}>
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <div className="project-tech">
-                  {project.technologies.map((t, i) => (
-                    <span key={i}>{t}</span>
-                  ))}
+      {/* ================= PROJECTS ================= */}
+      <section className="bg-slate-50 py-16">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-10 text-center text-slate-800">Featured Projects</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {projects?.map((project, i) => (
+              <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+                <div className="p-6 flex-1">
+                    <div className="flex justify-between items-start mb-2">
+                        <h3 className="text-xl font-bold text-slate-800">{project.title}</h3>
+                        {project.is_featured && <span className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-bold">Featured</span>}
+                    </div>
+                  <p className="text-slate-600 mb-4 text-sm leading-relaxed">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.technologies.slice(0, 5).map((tech, idx) => (
+                      <span key={idx} className="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="project-links">
-                  <a href={project.live_url} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink size={16} /> Live
-                  </a>
+                <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 flex gap-4">
                   {project.github_url && (
-                    <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+                    <a href={project.github_url} target="_blank" rel="noopener" className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-indigo-600">
                       <Github size={16} /> Code
+                    </a>
+                  )}
+                  {project.live_url && (
+                    <a href={project.live_url} target="_blank" rel="noopener" className="flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-indigo-600">
+                      <ExternalLink size={16} /> Live Demo
                     </a>
                   )}
                 </div>
               </div>
             ))}
+          </div>
         </div>
       </section>
 
-      {/* EDUCATION */}
-      <section id="education" className="education-section">
-        <h2 className="section-title">Education</h2>
-        {portfolioData.education.map((edu, idx) => (
-          <div key={idx} className="education-card">
-            <Award />
-            <h3>{edu.degree}</h3>
-            <h4>{edu.school}</h4>
-            <p><Calendar size={14} /> {edu.period}</p>
-            <p><MapPin size={14} /> {edu.location}</p>
-            <p>{edu.description}</p>
-          </div>
-        ))}
+      {/* ================= EDUCATION & CERTIFICATIONS ================= */}
+      <section className="py-16 max-w-5xl mx-auto px-4 grid md:grid-cols-2 gap-12">
+        <div>
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><Award className="text-indigo-500"/> Education</h2>
+            <div className="space-y-6">
+                {education?.map((edu, i) => (
+                    <div key={i}>
+                        <h3 className="font-bold text-slate-800">{edu.degree}</h3>
+                        <p className="text-indigo-600">{edu.school}</p>
+                        <p className="text-sm text-slate-500">{edu.period}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+        <div>
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><Brain className="text-indigo-500"/> Certifications</h2>
+            <div className="space-y-6">
+                {certifications?.map((cert, i) => (
+                    <div key={i}>
+                        <h3 className="font-bold text-slate-800">{cert.name}</h3>
+                        <p className="text-slate-600">{cert.issuer}</p>
+                        <p className="text-sm text-slate-500">{cert.date}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
       </section>
 
-      {/* CERTIFICATIONS */}
-      <section id="certifications" className="certifications-section">
-        <h2 className="section-title">Certifications</h2>
-        {portfolioData.certifications.map((cert, idx) => (
-          <div key={idx} className="certification-card">
-            <Brain />
-            <h3>{cert.name}</h3>
-            <p>{cert.issuer} — {cert.date}</p>
-            <p>{cert.description}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* CONTACT */}
+      {/* ================= CONTACT (CONNECTED TO APP.CSS) ================= */}
+      {/* This uses the class names 'contact-section', 'contact-grid', etc. 
+          so it will pick up the Glassmorphism styles from your App.css */}
       <section id="contact" className="contact-section">
-        <h2 className="section-title">Contact</h2>
-        <a href={`mailto:${portfolioData.info.email}`}><Mail /> {portfolioData.info.email}</a>
-        <a href={`tel:${portfolioData.info.phone}`}><Phone /> {portfolioData.info.phone}</a>
-        <a href={portfolioData.info.linkedin} target="_blank" rel="noreferrer"><Linkedin /> LinkedIn</a>
-        <a href={portfolioData.info.github} target="_blank" rel="noreferrer"><Github /> GitHub</a>
-      </section>
+        <div className="contact-content">
+          <h2 className="section-title">Let's Connect</h2>
+          <p className="section-subtitle">
+            Currently open for full-stack opportunities.<br />
+            Feel free to reach out for collaborations or just a friendly hello.
+          </p>
 
-      <footer className="footer">
-        <p>© 2026 {portfolioData.info.name}. All rights reserved.</p>
-      </footer>
+          <div className="contact-grid">
+            
+            <a href={`mailto:${info.email}`} className="contact-card">
+              <div className="icon-box"><Mail size={24} /></div>
+              <div className="card-info">
+                <span className="label">Email</span>
+                <span className="value">{info.email}</span>
+              </div>
+            </a>
+
+            <a href={`tel:${info.phone}`} className="contact-card">
+              <div className="icon-box"><Phone size={24} /></div>
+              <div className="card-info">
+                <span className="label">Phone</span>
+                <span className="value">{info.phone}</span>
+              </div>
+            </a>
+
+            <a href={info.linkedin} target="_blank" rel="noreferrer" className="contact-card">
+              <div className="icon-box"><Linkedin size={24} /></div>
+              <div className="card-info">
+                <span className="label">LinkedIn</span>
+                <span className="value">Connect with me</span>
+              </div>
+            </a>
+
+            <a href={info.github} target="_blank" rel="noreferrer" className="contact-card">
+              <div className="icon-box"><Github size={24} /></div>
+              <div className="card-info">
+                <span className="label">GitHub</span>
+                <span className="value">View my code</span>
+              </div>
+            </a>
+
+          </div>
+        </div>
+      </section>
 
     </div>
   );
-};
-
-export default Portfolio;
+}
